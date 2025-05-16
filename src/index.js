@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import connectionDB from "./db/connectionDB.js";
 import cors from "cors";
+import authRouter from "./routes/auth.route.js";
 const app = express();
 config();
 
@@ -13,9 +14,8 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded());
-app.get("/", (req, res) => {
-  res.send("Hello Worlddsaffds!");
-});
+
+app.use("/api/auth", authRouter);
 
 connectionDB().then(() => {
   console.log("Mongo Db is Connected.");
