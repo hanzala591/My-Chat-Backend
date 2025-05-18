@@ -2,8 +2,9 @@ import emailValidator from "node-email-verifier";
 import ApiError from "../lib/ApiError.js";
 import ApiResponse from "../lib/ApiResponse.js";
 import Auth from "../models/auth.model.js";
-import bcrypt from "bcrypt";
-
+import bcrypt, { compareSync } from "bcrypt";
+import { generateRandom } from "../lib/RandomNumber.js";
+import { sendEmail } from "../lib/NodeMailer.js";
 //  User Sign Up
 export const signup = async (req, res) => {
   try {
@@ -51,4 +52,33 @@ export const signup = async (req, res) => {
 };
 
 // User Sign Up
-export const signin = async (req, res) => {};
+export const signin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email) {
+      throw new ApiError(400, "Email is required.");
+    } else {
+      const validEmail = await emailValidator(email);
+      if (!validEmail) {
+        throw new ApiError(400, "Please Enter the Valid Email.");
+      }
+    }
+    if (!password) {
+      throw new ApiError(400, "Password is required.");
+    }
+    const findedUser = await Auth.findOne({ email });
+    if (!findedUser) {
+      throw new ApiError(400, "User is not Existed.");
+    }
+    const correctPassword = compareSync(password, findedUser.password);
+    if (!correctPassword) {
+      throw new ApiError(400, "Wrong Password.");
+    }
+
+    const code = generateRandom();
+    await sendEmail(email, code);
+    res.status.json(new ApiResponse(200, "Code Send Your Gmail"));
+  } catch (error) {
+    res.json({ ...error, message: error.message });
+  }
+};
