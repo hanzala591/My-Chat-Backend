@@ -13,9 +13,13 @@ export const transporter = nodemailer.createTransport({
 export const sendEmail = async (email, number) => {
   const info = await transporter.sendMail({
     from: "My Chat <honeyrai591@gmail.com>",
-    to: "raihanzala591@gmail.com",
+    to: email,
     subject: "Verify Your Email By My Chat",
     text: `Code is Send From My Chat ${number}`, // plain‑text body
-    html: `<b>Code is Send From My Chat ${number}</b>`, // HTML body
+    html: `
+    <div>
+    Code is Send From My Chat <br/>
+    Your Code is : 
+    <b>${number}</b></div>`, // HTML body
   });
 };
