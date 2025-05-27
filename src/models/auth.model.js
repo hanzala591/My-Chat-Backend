@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const authSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -28,5 +28,5 @@ const authSchema = new mongoose.Schema(
   }
 );
 
-const Auth = mongoose.model("Auth", authSchema);
-export default Auth;
+const User = mongoose.model("User", userSchema);
+export default User;
