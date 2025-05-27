@@ -1,4 +1,4 @@
-import User from "../models/auth.model.js";
+import User from "../models/user.model.js";
 import ApiResponse from "../lib/ApiResponse.js";
 export const getAllUser = async (req, res) => {
   try {

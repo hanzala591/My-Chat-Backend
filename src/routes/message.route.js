@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getAllAdminMessages,
   getAllMessages,
   sendMessage,
 } from "../controllers/message.controller.js";
@@ -20,5 +21,11 @@ messageRouter.get(
   authenticateUser,
   getAllMessagesValidation,
   getAllMessages
+);
+
+messageRouter.get(
+  "/getAllAdminMessages",
+  authenticateUser,
+  getAllAdminMessages
 );
 export default messageRouter;

@@ -4,7 +4,7 @@ import { messages } from "../constants/message.constant.js";
 import ApiResponse from "../lib/ApiResponse.js";
 import Message from "../models/message.model.js";
 import { io } from "../lib/socket.js";
-import User from "../models/auth.model.js";
+import User from "../models/user.model.js";
 export const sendMessage = async (req, res) => {
   try {
     const { user: senderId } = req;
@@ -20,7 +20,8 @@ export const sendMessage = async (req, res) => {
     if (detectedMessage.hasAbusiveWords === true) {
       const admin = await User.findOne({ role: "admin" });
       messageObj.receiverId = admin._id;
-      // io.to(admin._id).emit("newmessage", messageObj);
+      io.to(admin._id.toString()).emit("newmessage", messageObj);
+      console.log(admin._id.toString());
     } else {
       io.to(receiverId).emit("newmessage", messageObj);
     }
@@ -58,6 +59,18 @@ export const getAllMessages = async (req, res) => {
         },
       ],
     }).select("-_id -createdAt -updatedAt -__v");
+    res.status(200).json(new ApiResponse(200, messages));
+  } catch (error) {
+    res.status(error?.code || 400).json({ ...error, error: error?.message });
+  }
+};
+
+export const getAllAdminMessages = async (req, res) => {
+  try {
+    const { user } = req;
+    const messages = await Message.find({ receiverId: user._id })
+      .select("-createdAt -updatedAt -__v")
+      .populate("senderId", "username");
     res.status(200).json(new ApiResponse(200, messages));
   } catch (error) {
     res.status(error?.code || 400).json({ ...error, error: error?.message });

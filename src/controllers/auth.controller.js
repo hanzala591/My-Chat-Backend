@@ -1,7 +1,7 @@
 import emailValidator from "node-email-verifier";
 import ApiError from "../lib/ApiError.js";
 import ApiResponse from "../lib/ApiResponse.js";
-import User from "../models/auth.model.js";
+import User from "../models/user.model.js";
 import bcrypt, { compareSync, hashSync } from "bcrypt";
 import { generateRandom } from "../lib/generateRandom.js";
 import { sendEmail } from "../lib/sendEmail.js";
