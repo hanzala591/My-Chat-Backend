@@ -158,9 +158,9 @@ export const verifyOTPForgetPassword = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
   try {
-    // if (!req?.user) {
-    //   throw new ApiError(401, messages.NOT_SIGN_IN);
-    // }
+    if (!req?.user) {
+      throw new ApiError(401, messages.NOT_SIGN_IN);
+    }
     res.status(200).json(new ApiResponse(200, req?.user));
   } catch (error) {
     res.status(error.code || 400).json({ ...error, message: error.message });
