@@ -7,7 +7,7 @@ import { io } from "../lib/socket.js";
 import User from "../models/user.model.js";
 export const sendMessage = async (req, res) => {
   try {
-    const { user: senderId } = req;
+    const { _id: senderId } = req.user;
     const { id: receiverId } = req.params;
     const { message } = req.body;
     const messageObj = {
@@ -21,7 +21,6 @@ export const sendMessage = async (req, res) => {
       const admin = await User.findOne({ role: "admin" });
       messageObj.receiverId = admin._id;
       io.to(admin._id.toString()).emit("newmessage", messageObj);
-      console.log(admin._id.toString());
     } else {
       io.to(receiverId).emit("newmessage", messageObj);
     }

@@ -19,8 +19,16 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "user"],
       default: "user",
     },
-    isVerified: {
+    otp: {
       type: Number,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    about: {
+      type: String,
+      default: "Hey you are using My Chat.",
     },
   },
   {

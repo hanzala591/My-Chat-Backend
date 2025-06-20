@@ -48,7 +48,7 @@ export const verifyOTPSigninValidation = async (req, res, next) => {
         minDomainSegments: 2,
         tlds: { allow: ["com", "net"] },
       }),
-      code: Joi.number().min(6),
+      otp: Joi.number().min(6),
     });
 
     const { error } = schema.validate(req.body);
@@ -86,7 +86,7 @@ export const verifyOTPForgetPasswordValidation = async (req, res, next) => {
         minDomainSegments: 2,
         tlds: { allow: ["com", "net"] },
       }),
-      code: Joi.number().min(6),
+      otp: Joi.number().min(6),
       password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
     });
 
