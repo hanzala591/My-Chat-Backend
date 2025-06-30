@@ -2,22 +2,28 @@ import Joi from "joi";
 import ApiError from "../../lib/ApiError.js";
 export const sendMassageValidation = async (req, res, next) => {
   try {
+    console.log(req?.body?.text);
+    console.log(req?.file?.path);
     const schema = Joi.object({
-      message: Joi.string().min(1).required(),
+      text: Joi.string().allow("").min(2),
+      fileUrl: Joi.string().allow("").min(2),
       user: Joi.required(),
       id: Joi.required(),
-    });
+    }).or("text", "fileUrl");
 
     const { error } = schema.validate({
-      message: req.body.message,
+      text: req?.body?.text,
+      fileUrl: req?.file?.path,
       user: req?.user,
       id: req?.params?.id,
     });
     if (error) {
-      throw new ApiError(400, error.details[0].message);
+      console.log(error);
+      throw new ApiError(403, error.details[0].message);
     }
   } catch (error) {
-    res.status(error?.code || 400).json({ ...error, message: error.message });
+    console.log(error);
+    res.status(error?.code || 411).json({ ...error, message: error.message });
   }
   next();
 };

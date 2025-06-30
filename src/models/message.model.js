@@ -11,8 +11,25 @@ const messageSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    message: {
+    fileType: {
       type: String,
+      default: null,
+    },
+    text: {
+      type: String,
+      default: null,
+    },
+    fileUrl: {
+      type: String,
+      default: null,
+    },
+    fileType: {
+      type: String,
+      default: null,
+    },
+    fileName: {
+      type: String,
+      default: null,
     },
   },
   {
