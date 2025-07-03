@@ -13,10 +13,12 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
-  socket.on("register", (userid) => {
+  socket.on("register", (userid, callback) => {
+    console.log(Array.from(socket));
     socket.join(userid);
-    io.to(userid).emit("registered", `You are Connected. ${userid}`);
+    callback(`You are Connected. ${userid}`);
   });
+  socket.on("join-group", (groupid, callback) => {});
 });
 
 export { app, server, io };

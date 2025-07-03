@@ -8,6 +8,6 @@ export const getAllUser = async (req, res) => {
     }).select("-password -role -isVerified -createdAt -updatedAt -__v");
     res.status(200).json(new ApiResponse(200, allUser));
   } catch (error) {
-    console.log(error);
+    res.status(error?.code || 500).json({ ...error, error: error?.message });
   }
 };

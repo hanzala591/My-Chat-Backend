@@ -26,6 +26,9 @@ export const messages = {
 
   // Verify Email
   NOT_VERIFIED_EMAIL: "Email Unverified",
+
+  // Group
+  GROUP_CREATED: "Group is Created Succefully.",
 };
 export const timming = {
   // Expiry Time in milliseconds

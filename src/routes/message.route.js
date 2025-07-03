@@ -4,7 +4,7 @@ import {
   getAllChatMessages,
   sendMessage,
 } from "../controllers/message.controller.js";
-import { authenticateUser } from "../middlewares/auth.middleware.js";
+import { authenticatedUser } from "../middlewares/auth.middleware.js";
 import {
   getAllMessagesValidation,
   sendMassageValidation,
@@ -13,21 +13,21 @@ import { upload } from "../lib/multer.js";
 const messageRouter = express.Router();
 messageRouter.post(
   "/sendmessage/:id",
-  authenticateUser,
+  authenticatedUser,
   upload.single("media"),
   sendMassageValidation,
   sendMessage
 );
 messageRouter.get(
   "/getAllChatMessages/:id",
-  authenticateUser,
+  authenticatedUser,
   getAllMessagesValidation,
   getAllChatMessages
 );
 
 messageRouter.get(
   "/getAllAdminMessages",
-  authenticateUser,
+  authenticatedUser,
   getAllAdminMessages
 );
 export default messageRouter;

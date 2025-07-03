@@ -16,7 +16,7 @@ import {
   forgetPasswordValidation,
   verifyOTPForgetPasswordValidation,
 } from "../middlewares/Validation/authvalidation.middleware.js";
-import { authenticateUser } from "../middlewares/auth.middleware.js";
+import { authenticatedUser } from "../middlewares/auth.middleware.js";
 const authRouter = express.Router();
 authRouter.post("/signUp", signUpValidation, signUp);
 authRouter.post("/verifyOTPSignUp", verifyOTPSigninValidation, verifyOTPSignUp);
@@ -28,6 +28,6 @@ authRouter.post(
   verifyOTPForgetPasswordValidation,
   verifyOTPForgetPassword
 );
-authRouter.get("/getCurrentUser", authenticateUser, getCurrentUser);
-authRouter.get("/logout", authenticateUser, logout);
+authRouter.get("/getCurrentUser", authenticatedUser, getCurrentUser);
+authRouter.get("/logout", authenticatedUser, logout);
 export default authRouter;

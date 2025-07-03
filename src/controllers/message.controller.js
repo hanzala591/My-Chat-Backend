@@ -29,15 +29,20 @@ export const sendMessage = async (req, res) => {
       receiverId,
       text: text,
       fileType: fileType,
-      fileUrl: uploadedFile?.secure_url,
-      fileName: file?.originalname,
+      fileUrl: uploadedFile?.secure_url || null,
+      fileName: file?.originalname || null,
     };
 
     const detectedMessage = detectAbuse(text || "");
     if (detectedMessage.hasAbusiveWords === true) {
       const admin = await User.findOne({ role: "admin" });
       messageObj.receiverId = admin._id;
-      io.to(admin._id.toString()).emit("newmessage", messageObj);
+      const senderUser = await User.findOne({ _id: senderId }).select(
+        "username email"
+      );
+      messageObj.senderId = senderUser;
+      io.to(admin._id.toString()).emit("adminMessage", messageObj);
+      messageObj.senderId = senderId;
     } else {
       io.to(receiverId.toString()).emit("newmessage", messageObj);
     }
@@ -57,9 +62,7 @@ export const sendMessage = async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, response, messages.SEND_MESSAGE_SUCCESSFULL));
   } catch (error) {
-    if (!res.headersSent) {
-      return res.status(500).json({ error: error.message || "Server Error" });
-    }
+    res.status(error?.code || 500).json({ ...error, error: error?.message });
   }
 };
 
