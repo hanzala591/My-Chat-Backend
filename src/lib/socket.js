@@ -14,11 +14,17 @@ const io = new Server(server, {
 });
 io.on("connection", (socket) => {
   socket.on("register", (userid, callback) => {
-    console.log(Array.from(socket));
-    socket.join(userid);
-    callback(`You are Connected. ${userid}`);
+    const room = io.sockets.adapter.rooms.get(userid);
+    if (room && room.size > 0) {
+      callback(`You are Already Connected. ${userid}`);
+    } else {
+      socket.join(userid);
+      callback(`You are Connected. ${userid}`);
+    }
   });
-  socket.on("join-group", (groupid, callback) => {});
+  socket.on("join-group", (groupId, userId) => {
+    socket.join(groupId);
+  });
 });
 
 export { app, server, io };

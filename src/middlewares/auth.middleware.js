@@ -12,7 +12,6 @@ export const authenticatedUser = async (req, res, next) => {
       throw new ApiError(401, messages.NOT_SIGN_IN);
     }
   } catch (error) {
-    console.error(error.code);
     next(error);
   }
 };

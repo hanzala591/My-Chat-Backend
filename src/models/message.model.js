@@ -9,7 +9,15 @@ const messageSchema = new mongoose.Schema(
     receiverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    chatType: {
+      type: String,
+      enum: ["user", "group"],
       required: true,
+    },
+    receiverGroup: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Group",
     },
     fileType: {
       type: String,

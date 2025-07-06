@@ -26,7 +26,6 @@ app.use("/api/users", userRouter);
 app.use("/api/groups", groupRoute);
 app.use((err, req, res, next) => {
   console.error("Global Error:", err);
-
   res.status(err.code || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
